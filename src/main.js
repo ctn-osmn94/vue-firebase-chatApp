@@ -1,9 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './index.css'
-import firebase from 'firebase'
-
-Vue.config.productionTip = false
+import './assets/tailwind.css'
+import 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBW3dZ-_dmea24517e3bo1z_x2XOB8k6Yk",
@@ -16,11 +17,12 @@ const firebaseConfig = {
     measurementId: "G-9PH9BFGLBG"
   };
   
-  firebase.initializeApp(firebaseConfig)
-  
-  firebase.auth().onAuthStateChanged(() => new Vue({
-    render: h => h(App),
-  }).$mount('#app'))
-  
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const database = getDatabase(app);
 
-createApp(App).mount('#app')
+
+  export {auth,database}
+  
+  createApp(App).mount('#app');
+  
