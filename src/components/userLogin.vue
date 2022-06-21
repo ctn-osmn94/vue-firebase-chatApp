@@ -6,11 +6,13 @@
 </template>
 
 <script>
-
+import { GoogleAuthProvider,getAuth, signInWithRedirect  } from "firebase/auth";
 export default {
     methods: {
         Login() {
-            
+            const provider = new GoogleAuthProvider();
+            const auth = getAuth();
+            signInWithRedirect(auth, provider);
         }
     },
 }
