@@ -1,7 +1,8 @@
 <script>
 import privateMessage from './components/privateMessage.vue'
 import userLogin from './components/userLogin.vue'
-import { getAuth } from "firebase/auth";
+import firebase from 'firebase/app'
+import "firebase/auth";
 export default {
   components: {
     privateMessage,
@@ -10,18 +11,17 @@ export default {
 
   data() {
     return {
-      auth: getAuth(),
-      user: null
+      user: firebase.auth().currentUser
     }
   },
- 
+
 
 }
 </script>
 
 <template>
   <div>
-    <private-message v-if="user == auth.currentUser"></private-message>
+    <private-message v-if="user"></private-message>
     <user-login v-else></user-login>
   </div>
 </template>

@@ -12,13 +12,18 @@
   </div>
 </template>
 <script>
-  import { getAuth } from "firebase/auth";
+  import firebase from 'firebase/app'
+  import "firebase/auth";
+
   export default {
-    
     data() {
       return {
         message: null
       }
+    },
+
+    unmount() {
+      this.logOut()
     },
 
     methods: {
@@ -27,7 +32,7 @@
       },
 
       logOut() {
-        getAuth().signOut()
+        firebase.auth().signOut()
       }
     },
   }
