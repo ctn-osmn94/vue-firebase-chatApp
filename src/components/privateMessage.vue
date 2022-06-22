@@ -1,34 +1,56 @@
 <template>
-  <div>
-    <h1 class="text-xl font-bold">chat app</h1>
-    <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
-  </div>
+  
   <div class="flex flex-col bg-blue-200 w-full h-screen justify-between py-10 px-5">
-    <p class="rounded-md bg-white"> {{message}} </p>
-    <div class="flex items-center gap-3">
-      <input v-model="message" class="p-2 bg-white rounded-md w-full" type="text" placeholder="Message...">
-      <i @click="saveMessages" class="fa-solid fa-paper-plane text-2xl text-cyan-400"></i>
+    <div>
+      <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
     </div>
+    <div v-for="(msg,index) in messages" :key="index">
+      <img :src="msg.userImage" alt="">
+      <p> {{msg.text}} </p>
+    </div>
+    
+    <form @submit.prevent="saveMessages" class="flex gap-3">
+      <input v-model="message" class="p-2 bg-white rounded-md w-full" type="text" placeholder="type message">
+      <button type="submit" :disabled="!message">
+        <i class="fa-solid fa-paper-plane text-2xl text-cyan-400"></i>
+      </button>
+    </form>
   </div>
 </template>
 <script>
   import firebase from 'firebase/app'
+  import "firebase/firestore";
   import "firebase/auth";
 
   export default {
     data() {
       return {
-        message: null
+        db: firebase.firestore(),
+        user: firebase.auth().currentUser,
+        message: null,
+        messages: []
       }
     },
 
-    unmount() {
-      this.logOut()
+    mounted() {
+      this.db.collection('messages').orderBy('sendTime').onSnapshot(querrySnap => {
+        this.messages = querrySnap.docs.map(doc => doc.data())
+      })
     },
 
     methods: {
-      saveMessages() {
-        console.log("dasd");
+     async saveMessages() {
+        const messageInfo = {
+          userId: this.user.uid,
+          displayName: this.user.displayName,
+          userImage: this.user.photoURL,
+          text: this.message,
+          'sendTime': Date.now()
+        }
+
+      await this.db.collection('messages').add(messageInfo)
+      this.message = null
+        
       },
 
       logOut() {
