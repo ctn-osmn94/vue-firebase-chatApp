@@ -1,11 +1,11 @@
 <template>
   
-  <div class="flex flex-col bg-blue-200 gap-5 w-full h-screen justify-between py-10 px-5">
+  <div class="flex flex-col bg-blue-200 gap-5 w-full h-screen justify-between py-10 px-5 overflow-y-auto">
     <div class="flex flex-col gap-4">
       <div>
         <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
       </div>
-      <div v-for="(msg,index) in messages" :key="index" class="flex justify-between items-center bg-white p-2 rounded-lg">
+      <div v-for="(msg,index) in messages" :key="index" class="flex justify-between items-center bg-white p-2 rounded-lg ">
         <img class="w-10 rounded-full" :src="msg.userImage" alt="">
         <p class="text-lg"> {{msg.text}} </p>
         <p> {{msg['sendTime']}} </p>
