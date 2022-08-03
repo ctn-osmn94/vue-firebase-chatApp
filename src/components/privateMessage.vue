@@ -5,9 +5,9 @@
       <div>
         <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
       </div>
-      <div v-for="(msg,index) in messages" :key="index" class="flex justify-between items-center bg-white p-2 rounded-lg ">
+      <div  v-for="(msg,index) in messages" :key="index" class="flex justify-between items-center bg-white p-2 rounded-lg">
         <img class="w-10 rounded-full" :src="msg.userImage" alt="">
-        <p class="text-lg"> {{msg.text}} </p>
+        <p @click="deleteMessage" class="text-lg"> {{msg.text}} </p>
         <p> {{msg['sendTime']}} </p>
       </div>
     </div>
@@ -36,8 +36,11 @@
     },
 
     mounted() {
+      
       this.db.collection('messages').orderBy('sendTime').onSnapshot(querrySnap => {
-        this.messages = querrySnap.docs.map(doc => doc.data())
+        this.messages = querrySnap.docs
+        .map(doc => ({id:doc.id, ...doc.data()}))
+        
       })
     },
 
@@ -55,6 +58,12 @@
       await this.db.collection('messages').add(messageInfo)
       this.message = null
         
+      },
+
+      deleteMessage() {
+        this.db.collection("messages").onSnapshot(querrySnap=> {
+          querrySnap.docs.map(doc => doc.ref.delete())
+        })
       },
 
       logOut() {

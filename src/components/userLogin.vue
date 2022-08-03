@@ -1,7 +1,8 @@
 <template>
-    <div >
-        <h1 class="text-2xl font-bold">Login Page</h1>
-        <button @click="Login" class="bg-blue-300 rounded-md p-2">Login With Google</button>
+    <div class="text-center flex flex-col gap-10 bg-blue-300 text-white p-5 justify-center w-full h-screen">
+        <h1 class="text-4xl font-bold">Login Page</h1>
+        <i class="fa-solid fa-users text-4xl "></i>
+        <button @click="Login" class="bg-green-300 rounded-md p-4 text-xl">Login With Google</button>
     </div>
 </template>
 
