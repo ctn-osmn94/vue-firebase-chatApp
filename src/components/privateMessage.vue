@@ -1,18 +1,21 @@
 <template>
   
-  <div class="flex flex-col bg-blue-200 w-full h-screen justify-between py-10 px-5">
-    <div>
-      <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
-    </div>
-    <div v-for="(msg,index) in messages" :key="index">
-      <img :src="msg.userImage" alt="">
-      <p> {{msg.text}} </p>
+  <div class="flex flex-col bg-blue-200 gap-5 w-full h-screen justify-between py-10 px-5">
+    <div class="flex flex-col gap-4">
+      <div>
+        <button class="bg-blue-300 p-2 rounded-md" @click="logOut">log out</button>
+      </div>
+      <div v-for="(msg,index) in messages" :key="index" class="flex justify-between items-center bg-white p-2 rounded-lg">
+        <img class="w-10 rounded-full" :src="msg.userImage" alt="">
+        <p class="text-lg"> {{msg.text}} </p>
+        <p> {{msg['sendTime']}} </p>
+      </div>
     </div>
     
-    <form @submit.prevent="saveMessages" class="flex gap-3">
-      <input v-model="message" class="p-2 bg-white rounded-md w-full" type="text" placeholder="type message">
+    <form @submit.prevent="sendMessages" class="flex gap-3 mt-5">
+      <textarea v-model="message" class="p-3 bg-white rounded-lg w-full" type="text" placeholder="type message"></textarea>
       <button type="submit" :disabled="!message">
-        <i class="fa-solid fa-paper-plane text-2xl text-cyan-400"></i>
+        <i class="fa-solid fa-paper-plane text-2xl text-blue-500"></i>
       </button>
     </form>
   </div>
@@ -39,13 +42,14 @@
     },
 
     methods: {
-     async saveMessages() {
+     async sendMessages() {
+        const currentDate = new Date()
         const messageInfo = {
           userId: this.user.uid,
           displayName: this.user.displayName,
           userImage: this.user.photoURL,
           text: this.message,
-          'sendTime': Date.now()
+          'sendTime': currentDate.getHours() + ':' + currentDate.getMinutes()
         }
 
       await this.db.collection('messages').add(messageInfo)

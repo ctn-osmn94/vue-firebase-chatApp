@@ -9,6 +9,7 @@ export default {
     userLogin
   },
 
+ 
   data() {
     return {
       user: firebase.auth().currentUser
@@ -20,7 +21,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div id="app">
     <private-message v-if="user"></private-message>
     <user-login v-else></user-login>
   </div>
