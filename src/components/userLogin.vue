@@ -14,7 +14,6 @@ export default {
         Login() {
             const provider = new firebase.auth.GoogleAuthProvider()
             firebase.auth().signInWithRedirect(provider)
-            .catch(console.log)
         }
     },
 }
